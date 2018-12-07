@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    shoppinglist-app
+
+    Simple CRUD web service. State is stored in a DynamoDB table.
+    
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Timeout: 3
+
+Resources:
+    GetListsLambdaFunction: # Get all Lists
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: list/build/
+            Handler: lambdahandlers.get_lists
+            Runtime: python3.6
+            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+                Variables:
+                    PARAM1: VALUE
+            Events: # A map that defines the events that trigger this function
+                GetResource:
+                    Type: Api
+                    Properties:
+                        Path: /list
+                        Method: get
+
+    GetListLambdaFunction: # Get single list
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: list/build/
+            Handler: lambdahandlers.get_list
+            Runtime: python3.6
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events: # A map that defines the events that trigger this function
+                GetResource:
+                    Type: Api
+                    Properties:
+                        Path: /list/{listName}
+                        Method: get
+                       
+                        
+    PostLambdaFunction: # Post (add) new list
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: list/build/
+            Handler: lambdahandlers.add_list
+            Runtime: python3.6
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                ShoppingList:
+                    Type: Api
+                    Properties:
+                        Path: /list
+                        Method: post
+                        
+    DeleteLambdaFunction: # Delete list
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: list/build/
+            Handler: lambdahandlers.delete_list
+            Runtime: python3.6
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                DeleteAPI:
+                    Type: Api
+                    Properties:
+                        Path: /list/{listName}
+                        Method: delete
+                              
+                                 
+    HelloFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: list/build/
+            Handler: lambdahandlers.hello
+            Runtime: python3.6
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                GetResource:
+                    Type: Api
+                    Properties:
+                        Path: /hello
+                        Method: get
+
+Outputs:
+
+    HelloWorldApi:
+      Description: "API Gateway endpoint URL for Prod stage for Shopping List function"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+
+    HelloWorldFunction:
+      Description: "Shopping List Lambda Function ARN"
+      Value: !GetAtt ShoppingListFunction.Arn
+
+    HelloWorldFunctionIamRole:
+      Description: "Implicit IAM Role created for Shopping List function"
+      Value: !GetAtt ShoppingListFunction.Arn

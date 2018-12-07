@@ -1,0 +1,10 @@
+version: 0.0
+Resources:
+  - ShoppingList:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "ShoppingListLambdaPython" 
+        Alias: "ShoppingListV1" 
+        CurrentVersion: "1"
+        TargetVersion: "2"
+        
