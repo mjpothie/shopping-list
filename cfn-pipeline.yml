@@ -237,7 +237,7 @@ Resources:
                 Owner: !Ref GitHubOwner
                 Repo: !Ref GitHubRepo
                 Branch: master
-                OAuthToken: b0d5c3b74dd30ff9ec3f1fb7d17a5c98ee5f06ed
+                OAuthToken: ab35a0e39a6a033dbd095a0d7bd359b606bbf314
                 # S3Bucket: !ImportValue 'github-to-s3-outputbucket'
                 # S3ObjectKey: !Sub '${GitHubOwner}/${GitHubRepo}/${GitHubOwner}_${GitHubRepo}.zip'
               OutputArtifacts:
