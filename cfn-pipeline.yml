@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  Creates serverless code pipeline
+  Creates serverless code pipeline!!
 
 Parameters:
   ProjectName:
@@ -19,6 +19,10 @@ Parameters:
     Default: shopping-list
     Description: The CodeBuild Project name
     Type: String
+  Parameter1:
+    Default: parameter1-value
+    Description: parameter1-desc
+    Type: String
     
 Metadata:
   AWS::CloudFormation::Interface:
@@ -31,7 +35,8 @@ Metadata:
           default: "GitHub Settings"
         Parameters:
           - GitHubOwner
-          - GitHubRepo   
+          - GitHubRepo
+          - Parameter1
 Resources:
   CloudFormationServiceRole: 
     Type: "AWS::IAM::Role"
@@ -232,7 +237,7 @@ Resources:
                 Owner: !Ref GitHubOwner
                 Repo: !Ref GitHubRepo
                 Branch: master
-                OAuthToken: 72437d5d29676c91840af282e5dcc8d89a869c60
+                OAuthToken: a8fc9e89c1a57f9b591e550c88d0c752dbb8e40f
                 # S3Bucket: !ImportValue 'github-to-s3-outputbucket'
                 # S3ObjectKey: !Sub '${GitHubOwner}/${GitHubRepo}/${GitHubOwner}_${GitHubRepo}.zip'
               OutputArtifacts:
