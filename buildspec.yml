@@ -1,15 +1,12 @@
 version: 0.2
 
 phases:
-  build:
+  install:
     commands:
-      - echo Build started on `date`
-      - echo Compiling the Python code...
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - pwd
-      - ls -al
+      - echo Install started on `date`
+      - aws cloudformation package --template-file samTemplate.yml --output-template-file outputSamTemplate.yaml --s3-bucket shoppinglist-sam-matthew.pothier
 artifacts:
+  type: zip
   files:
-    - '**/*'
+    - samTemplate.yml
+    - outputSameTemplate.yaml
