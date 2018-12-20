@@ -1,0 +1,26 @@
+{
+    "GetItemLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    },
+    "GetItemsLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    },
+    "AddItemLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    },
+    "UpdateItemLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    },
+    "DeleteItemLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    },
+    "CreateItemsTableLambdaFunction": {
+        "ENDPOINT_OVERRIDE": "http://dynamodb:8000",
+        "TABLE_NAME": "items"
+    }
+}

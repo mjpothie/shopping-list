@@ -1,108 +1,189 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-    shoppinglist-app
-
-    Simple CRUD web service. State is stored in a DynamoDB table.
+  Simple CRUD web service. State is stored in a DynamoDB table.
     
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-    Function:
-        Timeout: 3
+  Function:
+    Timeout: 3
+    Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+      Variables:
+        ENDPOINT_OVERRIDE: ""
+        TABLE_NAME: ""
 
 Resources:
-    GetListsLambdaFunction: # Get all Lists
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: list/build/
-            Handler: lambdahandlers.get_lists
-            Runtime: python3.6
-            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-                Variables:
-                    PARAM1: VALUE
-            Events: # A map that defines the events that trigger this function
-                GetResource:
-                    Type: Api
-                    Properties:
-                        Path: /list
-                        Method: get
+  LambdaRootRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "lambda.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
 
-    GetListLambdaFunction: # Get single list
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: list/build/
-            Handler: lambdahandlers.get_list
-            Runtime: python3.6
-            Environment:
-                Variables:
-                    PARAM1: VALUE
-            Events: # A map that defines the events that trigger this function
-                GetResource:
-                    Type: Api
-                    Properties:
-                        Path: /list/{listName}
-                        Method: get
-                       
-                        
-    PostLambdaFunction: # Post (add) new list
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: list/build/
-            Handler: lambdahandlers.add_list
-            Runtime: python3.6
-            Environment:
-                Variables:
-                    PARAM1: VALUE
-            Events:
-                ShoppingList:
-                    Type: Api
-                    Properties:
-                        Path: /list
-                        Method: post
-                        
-    DeleteLambdaFunction: # Delete list
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: list/build/
-            Handler: lambdahandlers.delete_list
-            Runtime: python3.6
-            Environment:
-                Variables:
-                    PARAM1: VALUE
-            Events:
-                DeleteAPI:
-                    Type: Api
-                    Properties:
-                        Path: /list/{listName}
-                        Method: delete
-                              
-                                 
-    HelloFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: list/build/
-            Handler: lambdahandlers.hello
-            Runtime: python3.6
-            Environment:
-                Variables:
-                    PARAM1: VALUE
-            Events:
-                GetResource:
-                    Type: Api
-                    Properties:
-                        Path: /hello
-                        Method: get
+  DynamoDBAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName: "DynamoDBAccessPolicy"
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Action:
+              - 'dynamodb:DeleteItem'
+              - 'dynamodb:GetItem'
+              - 'dynamodb:PutItem'
+              - 'dynamodb:UpdateItem'
+            Resource: 
+              'Fn::Join':
+                - ''
+                - - 'arn:aws:dynamodb:'
+                  - Ref: 'AWS::Region'
+                  - ':'
+                  - Ref: 'AWS::AccountId'
+                  - ':table/Lists'
+      Roles: 
+        - 
+          Ref: LambdaRootRole
+
+
+  GetItemLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to get item details.
+      Handler: lambdahandlers.get_item
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /items/{item_id}
+            Method: GET
+
+  GetItemsLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to get item details.
+      Handler: lambdahandlers.get_item
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: GET
+
+  AddItemLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to add item.
+      Handler: lambdahandlers.add_item
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: POST
+            
+  UpdateItemLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to add item.
+      Handler: lambdahandlers.add_item
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /items/{item_id}
+            Method: POST
+           
+            
+  DeleteItemLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to delete item.
+      Handler: lambdahandlers.delete_item
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /items/{item_id}
+            Method: DELETE
+
+  CreateItemsTableLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to create table
+      Handler: lambdahandlers.create_items_table
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /_create_items_table
+            Method: POST
+
+  ListTablesLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A simple backend with RESTful API endpoint to create table
+      Handler: lambdahandlers.list_tables
+      Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /_list_tables
+            Method: ANY
+
+            
+  HelloLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list/
+      Description: A hello world REST API
+      Handler: lambdahandlers.hello
+      Runtime: python3.6
+      Events:
+        API:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: ANY
 
 Outputs:
-
-    HelloWorldApi:
-      Description: "API Gateway endpoint URL for Prod stage for Shopping List function"
-      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-
-    HelloWorldFunction:
-      Description: "Shopping List Lambda Function ARN"
-      Value: !GetAtt ShoppingListFunction.Arn
-
-    HelloWorldFunctionIamRole:
-      Description: "Implicit IAM Role created for Shopping List function"
-      Value: !GetAtt ShoppingListFunction.Arn
+  GetItemLambdaFunction:
+    Description: "GetItem Lambda Function ARN"
+    Value: !GetAtt GetItemLambdaFunction.Arn
