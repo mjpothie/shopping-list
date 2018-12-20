@@ -178,18 +178,3 @@ if __name__ == "__main__":
 	create_items_table(None, None)
 
 	
-# def lambda_handler(event, context):
-    # # TODO implement
-    
-    # # Because we're using a Cognito User Pools authorizer, all of the claims
-    # # included in the authentication token are provided in the request context.
-    # # This includes the username as well as other attributes.
-    # # username = event.requestContext.authorizer.claims['cognito:username'];
-    
-    # return add_item(event)
-	# # return {
-        # # "statusCode": 200,
-        # # "body": json.dumps(
-            # # {"message": "hello world"}
-        # # )
-	# # }
