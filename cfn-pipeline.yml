@@ -4,8 +4,12 @@ Description: >
 
 Parameters:
   ProjectName:
-    Default: sam-project
+    Default: shoppinglist-codepipeline
     Description: The name for the project associated with this pipeline (used to namespace resources)
+    Type: String
+  ProjectDescription:
+    Default: sam-project description
+    Description: The description of the project associated with this pipeline
     Type: String
   GitHubOwner:
     Default: mjpothie
@@ -14,10 +18,6 @@ Parameters:
   GitHubRepo:
     Default: shopping-list
     Description: The GitHub repository name
-    Type: String
-  CodeBuildProject:
-    Default: shopping-list
-    Description: The CodeBuild Project name
     Type: String
   Parameter1:
     Default: parameter1-value
@@ -237,7 +237,7 @@ Resources:
                 Owner: !Ref GitHubOwner
                 Repo: !Ref GitHubRepo
                 Branch: master
-                OAuthToken: ab35a0e39a6a033dbd095a0d7bd359b606bbf314
+                OAuthToken: 441b0cd0a042fdbdc425e773df52be9a8e1f7b2d
                 # S3Bucket: !ImportValue 'github-to-s3-outputbucket'
                 # S3ObjectKey: !Sub '${GitHubOwner}/${GitHubRepo}/${GitHubOwner}_${GitHubRepo}.zip'
               OutputArtifacts:
@@ -255,7 +255,33 @@ Resources:
                 ProjectName: !Ref CodeBuildProject
               InputArtifacts:
                 - Name: AppSource
+              OutputArtifacts:
+                - Name: AppBuild
               RunOrder: '1'
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Ref ProjectName
+      Description: !Ref ProjectDescription
+      ServiceRole: arn:aws:iam::014542202029:role/ShoppingListCodeBuild
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/python:3.6.5
+        EnvironmentVariables:
+        - Name: varName
+          Value: varValue
+      Source:
+        # Location: codebuild-demo-test/0123ab9a371ebf0187b0fe5614fbb72c
+        Type: CODEPIPELINE 
+      TimeoutInMinutes: 10
+      Tags:
+        - Key: Key1
+          Value: Value1
+        - Key: Key2
+          Value: Value2
               
               
 

@@ -8,16 +8,20 @@ Globals:
         TABLE_NAME: ''
     Timeout: 3
 Outputs:
-  GetItemLambdaFunction:
-    Description: GetItem Lambda Function ARN
+  HelloApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloFunction:
+    Description: Hello Lambda function
     Value:
       Fn::GetAtt:
-      - GetItemLambdaFunction
+      - HelloLambdaFunction
       - Arn
 Resources:
   AddItemLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/af90acfd7e7890cfb7aef6023d30d28e
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to add item.
       Events:
         GetResource:
@@ -34,7 +38,7 @@ Resources:
     Type: AWS::Serverless::Function
   CreateItemsTableLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/4baab5e29301b49ed3e9012943968812
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to create table
       Events:
         GetResource:
@@ -51,7 +55,7 @@ Resources:
     Type: AWS::Serverless::Function
   DeleteItemLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/8c60f976eb371b96fd294075909274ba
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to delete item.
       Events:
         GetResource:
@@ -91,7 +95,7 @@ Resources:
     Type: AWS::IAM::Policy
   GetItemLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/4f6a3042bece8fc78a231828c69b7b56
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to get item details.
       Events:
         GetResource:
@@ -108,7 +112,7 @@ Resources:
     Type: AWS::Serverless::Function
   GetItemsLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/eddac1b183ffa66eb36552f09a8e00e8
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to get item details.
       Events:
         GetResource:
@@ -125,7 +129,7 @@ Resources:
     Type: AWS::Serverless::Function
   HelloLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/ca37cea0ffedc4e22804f7890b2cf5cf
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A hello world REST API
       Events:
         API:
@@ -151,7 +155,7 @@ Resources:
     Type: AWS::IAM::Role
   ListTablesLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/40c4bb85d7842d0f12a268144760da2b
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to create table
       Events:
         GetResource:
@@ -168,7 +172,7 @@ Resources:
     Type: AWS::Serverless::Function
   UpdateItemLambdaFunction:
     Properties:
-      CodeUri: s3://shoppinglist-sam-matthew.pothier/c0659e8bb1ef737c83473bf502760ce1
+      CodeUri: s3://shoppinglist-sam-matthew.pothier/a2fd992da6cd8e66f7ff03e06632d38d
       Description: A simple backend with RESTful API endpoint to add item.
       Events:
         GetResource:
