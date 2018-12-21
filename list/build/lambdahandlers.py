@@ -171,7 +171,7 @@ def list_tables(event,context):
 	
 	
 def hello(event,context):
-	return respond(None,'hello')
+	return respond(None,'hello!!!!!!!!!!!!!!!')
 	
 if __name__ == "__main__":
 	print("yeah baby")
