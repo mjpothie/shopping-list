@@ -12,14 +12,14 @@ SAM is a framework for building serverless applications on AWS.  Consists of 1) 
 * AWS CLI
 * SAM CLI (installed via Pip)
 
-## Create a Docker network
+### Create a Docker network
 Create a Docker network since both the SAM local docker container and the DynamoDB local container must be in the same network.
 
 ````
 docker network create lambda-local
 ````
 
-## Start up local DynamoDB container
+### Start up local DynamoDB container
 ````
 docker run -p 8000:8000 --network lambda-local --name dynamodb amazon/dynamodb-local
 ````
@@ -28,7 +28,7 @@ OR if you've already created the container….
 
 'docker start dynamodb'
 
-## Install Dependencies
+### Install Dependencies
 Create a build directory inside "list" and install packages defined in requirements.txt.  The build directory contains the source code and the Python packages that are loaded by SAM Local.
 
 `pip install -r .\requirements.txt -t build`
