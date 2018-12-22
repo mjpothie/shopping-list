@@ -1,6 +1,6 @@
 {
   "Parameters" : {
-    "DynamoDBTable" : "Items_Prod",
+    "DynamoDBTable" : "Items_Prod"
   }
 }
 
