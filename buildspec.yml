@@ -10,3 +10,5 @@ artifacts:
   files:
     - samTemplate.yml
     - outputSamTemplate.yaml
+    - test-stack-configuration.json
+    - prod-stack-configuration.json
