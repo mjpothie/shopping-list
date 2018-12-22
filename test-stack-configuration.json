@@ -1,0 +1,7 @@
+{
+  "Parameters" : {
+    "DynamoDBTable" : "Items_Test",
+  }
+}
+
+

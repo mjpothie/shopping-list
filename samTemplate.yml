@@ -12,6 +12,12 @@ Globals:
         ENDPOINT_OVERRIDE: ""
         TABLE_NAME: ""
 
+Parameters:
+  DynamoDBTable:
+    Default: Items
+    Description: The DynamoDB table name
+    Type: String
+        
 Resources:
   LambdaRootRole: 
     Type: "AWS::IAM::Role"
