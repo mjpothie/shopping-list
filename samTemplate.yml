@@ -182,6 +182,8 @@ Resources:
       Description: A hello world REST API
       Handler: lambdahandlers.hello
       Runtime: python3.6
+      Role:
+        !GetAtt LambdaRootRole.Arn
       Events:
         API:
           Type: Api
