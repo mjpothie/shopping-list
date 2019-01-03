@@ -60,6 +60,26 @@ Resources:
         - 
           Ref: LambdaRootRole
 
+          
+  DynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: items
+      AttributeDefinitions: 
+        - 
+          AttributeName: "ItemID"
+          AttributeType: "S"
+        - 
+          AttributeName: "ItemName"
+          AttributeType: "S"
+
+      KeySchema: 
+        - 
+          AttributeName: "ItemID"
+          KeyType: "HASH"
+        - 
+          AttributeName: "ItemName"
+          KeyType: "RANGE"    
 
   GetItemLambdaFunction:
     Type: AWS::Serverless::Function

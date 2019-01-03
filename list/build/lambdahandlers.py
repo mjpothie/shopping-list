@@ -12,7 +12,7 @@ if not endpoint_override:
 else:
 	dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url=endpoint_override)
 
-table_name = os.environ['DynamoDBTable']
+table_name = 'items'
 
 # dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://dynamodb:8000")
 
