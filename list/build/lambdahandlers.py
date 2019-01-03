@@ -14,7 +14,9 @@ else:
 
 table_name = 'items'
 
+#
 # dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://dynamodb:8000")
+#
 
 def respond(err, response=None):
 	return {
