@@ -15,7 +15,7 @@ Globals:
 Parameters:
   DynamoDBTable:
     Default: Items
-    Description: The DynamoDB table name
+    Description: DynamoDB table name
     Type: String
         
 Resources:
